@@ -62,7 +62,7 @@ Schema.createSchema = function (mongoose) {
 
             this.find(criteria)
                 .sort({
-                    'limit_at': -1
+                    'limit_at': 1
                 })
                 .limit(Number(options.perPage))
                 .skip(options.perPage * options.page)
