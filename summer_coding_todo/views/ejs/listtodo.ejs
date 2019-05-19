@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+
+    <title>listtodo</title>
+
+    <link href="/public/css/semantic.min.css" rel="stylesheet" type='text/css'>
+    <script src="/public/js/jquery-3.1.1.min.js"></script>
+    <script src="/public/js/semantic.min.js"></script>
+    <script src="/public/ckeditor/ckeditor.js"></script>
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            color: #000;
+            background-color: #fff;
+        }
+
+        .container {
+            margin-right: auto;
+            margin-left: auto;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+    </style>
+
+
+    <script>
+        // get으로 바꿔야 한다
+        function limitlisttodo(page, perPage) {
+            document.location = '/process/limitlisttodo?page=' + page + '&perPage=' + perPage;
+        }
+
+        function todo_add() {
+            console.log('ejs에서 todo가 호출됩니다.');
+            window.location.href =
+                '/public/html/addtodo.html';
+        }
+
+    </script>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <br><br>
+        <div align="right">
+            <input type="button" id="todoadd" onclick="todo_add()" value="todo추가하기" />
+        </div>
+
+        <select id="listcase" onchange="listcastChange()">
+            <option value="">정렬기준</option>
+            <option value="limit_at">마감기한</option>
+        </select>
+
+        <br><br>
+        <hr>
+
+        <h1>현재 todo 리스트 입니다.</h1>
+        <br><br>
+        <div class="ui grid">
+            <div class="two wide column">번호</div>
+            <div class="eight wide column">제목</div>
+            <div class="two wide column">완료여부</div>
+            <div class="two wide column">마감기한</div>
+        </div>
+
+        <div class="ui very relaxed selection celled list">
+            <%
+        var noStart = (pageCount - page)* perPage;
+        
+        for(var i =0; i<todos.length; i++){
+            var curTitle       = todos[i]._doc.title;
+            var curLimitAt     = todos[i]._doc.limit_at;
+            var curImportance  = todos[i]._doc.importance;
+            var curComplete    = todos[i]._doc.complete;
+            var curNo          = noStart -i;
+        %>
+            <div class="item">
+                <div class="ui grid">
+                    <div class="two wide column"><%= curNo %></div>
+                    <div class="fourteen wide column" onclick="javascript : window.location ='/process/showtodo/<%= todos[i]._id %>'">
+
+                        <div class="ui header">
+                            <h4 class="ui left aligned header">
+                                <%= curTitle %>
+                            </h4>
+                            <h5 class="ui right aligned orange header">
+                                <% 
+                                var dt = new Date();
+                                if(curLimitAt.getTime() < dt.getTime()){ %>
+                                <img id="image" class="ui avatar image" src="/public/images/alarm.png">
+                                마감기한이 지났습니다.
+
+                                <% } else { %>
+                                마감기한 : <%= curLimitAt %>
+                                <% } %>
+                                &nbsp;&nbsp;
+
+                            </h5>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <% } %>
+        </div>
+
+
+        <div class="tiny ui basic button">
+            <%
+            if(page > 0){
+        %>
+            <div class="ui icon button" onclick="limitlisttodo(0, <%= perPage %>)">
+                <i class="fast backward icon"></i>
+            </div>
+            <div class="ui icon button" onclick="limitlisttodo(<%= (page -1) %>, <%= perPage %>)">
+                <i class="left chevron icon"></i>
+            </div>
+            <%
+            } else {
+        %>
+
+            <div class="ui disabled icon button">
+                <i class="fast backward icon"></i>
+            </div>
+            <div class="ui disabled icon button">
+                <i class="left chevron icon"></i>
+            </div>
+
+            <% } %>
+            <% 
+        var initial = Math.floor(page /10) *10;
+        console.log('initial : ' + initial);
+        
+        var max = pageCount - initial;
+        if(max > 10){
+            max = initial +10;
+        }else{
+            max = initial + max;
+        }
+        console.log('max : '+ max);
+        
+        for(var i=initial; i<max; i++){
+            if(i != page){
+        %>
+
+            <div class="ui button" onclick="limitlisttodo(<%= i %>,<%= perPage %>)">
+                <%= i %>
+            </div>
+
+            <%
+        } else {
+        %>
+
+            <div class="ui active basic button">
+                <%= i %>
+            </div>
+            <%
+            }
+        }
+        %>
+
+            <%
+            if((page+1)<pageCount){
+        %>
+            <div class="ui icon button" onclick="limitlisttodo(<%= (page +1) %>, <%= perPage %>)">
+                <i class="right chevron icon"></i>
+            </div>
+            <div class="ui icon button" onclick="limitlisttodo(<%= (pageCount -1) %>,<%= perPage %>)">
+                <i class="fast forward icon"></i>
+            </div>
+
+            <% 
+        } else{
+        %>
+            <div class="ui disabled icon button">
+                <i class="right chevron icon"></i>
+            </div>
+            <div class="ui disabled icon button">
+                <i class="fast forward icon"></i>
+            </div>
+            <%
+        }
+        %>
+
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+
+    <title>listtodo</title>
+
+    <link href="/public/css/semantic.min.css" rel="stylesheet" type='text/css'>
+    <script src="/public/js/jquery-3.1.1.min.js"></script>
+    <script src="/public/js/semantic.min.js"></script>
+    <script src="/public/ckeditor/ckeditor.js"></script>
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            color: #000;
+            background-color: #fff;
+        }
+
+    </style>
+
+
+    <script>
+        // get으로 바꿔야 한다
+        function limitlisttodo(page, perPage) {
+            document.location = '/process/limitlisttodo?page=' + page + '&perPage=' + perPage;
+        }
+
+        function todo_add() {
+            console.log('ejs에서 todo가 호출됩니다.');
+            window.location.href =
+                '/public/html/addtodo.html';
+        }
+
+        function listcastChange() {
+            var caseSelect = document.getElementById("listcase");
+
+            // select element에서 선택된 option의 value가 저장된다.
+            var selectValue = langSelect.options[caseSelect.selectedIndex].value;
+
+            document.location = "/process/changecriteria?criteria=" + selectValue;
+
+        }
+
+    </script>
+
+</head>
+
+<body>
+
+
+</body>
+
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+
+    <title>showtodo</title>
+
+    <link href="/public/css/semantic.min.css" rel="stylesheet" type='text/css'>
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            color: #000;
+            background-color: #fff;
+        }
+
+        .image {
+            width: 30%;
+            height: 30%;
+        }
+
+    </style>
+
+    <script src="/public/js/jquery-3.1.1.min.js"></script>
+    <script src="/public/js/semantic.min.js"></script>
+    <script src="/public/ckeditor/ckeditor.js"></script>
+
+    <script>
+        function todo_complete(curTitle) {
+            document.location = '/process/todocomplete?title=' + curTitle;
+        }
+
+    </script>
+
+</head>
+
+<body>
+    <div class="ui blue fluid card">
+        <div class="content">
+            <%
+                    var curTitle = todos._doc.title;
+                    var curContent = todos._doc.contents;
+                    var curLimitAt = todos._doc.limit_at;
+                    var curImportance = todos._doc.importance;
+                    var curComplete = todos._doc.complete;
+                %>
+
+            <div id=titleOutput class="header"> <%= curTitle %></div>
+            <div id="limit_at" class="description"> 마감일 : <%= curLimitAt %></div>
+            <% 
+                var dt = new Date();
+                if(curLimitAt.getTime() < dt.getTime()){ %>
+                    <img id="image" class="ui avatar image" src="/public/images/alarm.png">
+                    마감기한이 지났습니다.
+            <% } %>
+            <div id="importance" class="description"> 중요도 : <%= curImportance %></div>
+
+            <div id="ContentsOutput" class="description">
+                <%= curContent %>
+            </div>
+        </div>
+        <div class="extra content">
+            <div class="right floated author">
+                <% if(curComplete == -1){ %>
+
+                <% } else { %>
+                완료된 todo입니다.
+                <% } %>
+            </div>
+        </div>
+        <br><br>
+
+        <div class="ui icon button">
+            <input type="button" id="" onclick="history.back()" value="이전페이지" />
+            <input type="button" id="todoremove" onclick="javascript : window.location ='/process/todoremove/<%= todos._id %>'" value="삭제" />
+            <input type="button" id="todoupdate" onclick="javascript : window.location ='/process/todoupdatepage/<%= todos._id %>'" value="변경" />
+        </div>
+
+
+    </div>
+</body>
+
+</html>

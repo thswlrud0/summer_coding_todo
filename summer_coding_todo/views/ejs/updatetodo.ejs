@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+
+    <title>addtodo</title>
+
+    <link href="/public/css/semantic.min.css" rel="stylesheet" type='text/css'>
+    <style>
+        * {
+            padding: 20;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            color: #000;
+            background-color: #fff;
+        }
+
+        .container {
+            margin-right: auto;
+            margin-left: auto;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+    </style>
+
+    <script src="/public/js/jquery-3.1.1.min.js"></script>
+    <script src="/public/js/semantic.min.js"></script>
+    <script src="/public/ckeditor/ckeditor.js"></script>
+
+
+</head>
+
+<body>
+    <div class="container">
+        <%
+                    var curId    = todos._id;
+                    var curTitle = todos._doc.title;
+                    var curContent = todos._doc.contents;
+                    var curLimitAt = todos._doc.limit_at;
+                    var curImportance = todos._doc.importance;
+                    var curComplete = todos._doc.complete;
+        %>
+
+        <img id="image" class="ui avatar image" src="../images/alarm.png">
+
+        <form class="content ui form" method="post" action="/process/updatetodo">
+            <h4 class="ui dividing header">todo 입력 항목</h4>
+
+            <div class="two field">
+                <div class="field">
+                    <label>제목</label>
+                    <input type="text" name="title" value='<%= curTitle %>'>
+
+                </div>
+                <div class="field"></div>
+            </div>
+
+            <div class="field">
+                <label>내용</label>
+                <textarea id="contents" name="contents" rows="10" cols="80"><%= curContent %></textarea>
+            </div>
+
+            <div class="two field">
+                <div class="field">
+                    <label>마감기한 <%= curLimitAt %></label>
+                </div>
+                <div class="field"></div>
+            </div>
+
+            <div class="two field">
+                <div class="field">
+                    <label>중요도 <%= curImportance %></label>
+                </div>
+                <div class="field"></div>
+            </div>
+
+            <div class="ui toggle checkbox">
+                <input type="checkbox" name="saveOption" value="checked">
+                <label>완료여부</label>
+            </div>
+
+            <!--완료여부는 default -1로 입력 -->
+
+            <input type="hidden" name="id" value='<%= curId %>'>
+            <input class="ui submit button" type="submit" value="변경" name="">
+            <br><br><a href="history.back()">"취소하기"</a>
+            <!--  <input class="ui button" type="button" value="취소" name="" onclick="javascript : history.back()"> -->
+        </form>
+    </div>
+</body>
+
+</html>
