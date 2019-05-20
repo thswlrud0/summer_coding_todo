@@ -91,7 +91,9 @@ Schema.createSchema = function (mongoose) {
             var self = this;
             var title = options.title;
             var contents = options.contents;
-            self.update({ $set : { title: title, contents : contents }}).exec(callback);
+            var complete = Number(options.complete);
+            
+            self.update({ $set : { title: title, contents : contents, complete : complete}}).exec(callback);
         }
     }
     

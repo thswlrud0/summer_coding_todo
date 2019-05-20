@@ -323,13 +323,20 @@ var updatetodo = function (req, res) {
                 var todo = results;
                 var paramTitle = req.param('title');
                 var paramContent = req.param('contents');
-                var paramcomplete = req.param('complete');
+                var paramcomplete = req.param('saveComplete');
+
+                if( paramcomplete == 'complete'){
+                    paramcomplete = 1;
+                }else{
+                    paramcomplete = -1;
+                }
                 var database = req.app.get('database');
 
 
                 var options = {
                     title : paramTitle,
-                    contents : paramContent
+                    contents : paramContent,
+                    complete : paramcomplete
                 }
                 
                 todo.todoUpdate(options, function (err, result) {
