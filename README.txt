@@ -10,4 +10,4 @@ cd summer_coding_todo
 # app start
 	node app.js
 
-   
+ # 서버시작시 warning은 mongoose 버전에 관한 warning이므로 서버 시작에 문제없습니다.
